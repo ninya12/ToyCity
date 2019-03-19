@@ -1,5 +1,1 @@
-# hello-world
-first test
-
-
-hello friends
+# 종합설계 GitHub
