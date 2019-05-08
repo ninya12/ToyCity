@@ -3,6 +3,7 @@
 Folder for self-driving code
 
  < Raspberry Pi >
+ 
  -- 차선 검출 --
 1. 카메라를 통해서 차선 검출
 2. 픽셀 중앙에서 소실점 까지 각도 계산
@@ -28,6 +29,7 @@ Folder for self-driving code
  
  
   < PC >
+  
  -- 경로 --
  1. 현재 위치 확인
  2. 목적지 확인
