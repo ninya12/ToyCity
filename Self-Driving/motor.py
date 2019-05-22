@@ -1,10 +1,10 @@
 import RPi.GPIO as GPIO
 import time
 
-# Forward Pwm Pin : 19
-pwmPin1 = 19
-# Steering Pwm Pin : 24
-pwmPin2 = 24
+# Forward Pwm Pin : 20
+pwmPin1 = 20
+# Steering Pwm Pin : 5
+pwmPin2 = 5
 
 # Forward Pin : 16 // Reverse Pin : 12
 dirPin1 = 16
