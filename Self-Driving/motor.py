@@ -7,8 +7,8 @@ pwmPin1 = 20
 pwmPin2 = 5
 
 # Forward Pin : 16 // Reverse Pin : 12
-dirPin1 = 16
-dirPin2 = 12
+dirPin1 = 12
+dirPin2 = 16
 
 # Right Pin : 13 // Left Pin : 6
 rirPin1 = 13
@@ -28,7 +28,7 @@ p2 = GPIO.PWM(pwmPin2, 100)
 p.start(0)
 p2.start(0)
 p.ChangeDutyCycle(0)
-p2.ChangeDutyCycle(100)
+p2.ChangeDutyCycle(90)
 
 while 1:
     print("Mode : ")

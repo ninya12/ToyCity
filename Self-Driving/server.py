@@ -16,9 +16,10 @@ def recvall(sock, count):
 
 
 # 수신에 사용될 내 ip와 내 port번호
-TCP_IP = '192.168.0.21'
+# iPhone  '172.20.10.5'
+# and  '192.168.43.21'
+TCP_IP = '192.168.43.21'
 TCP_PORT = 5001
-
 # TCP소켓 열고 수신 대기
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((TCP_IP, TCP_PORT))
