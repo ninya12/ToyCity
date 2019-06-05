@@ -1,6 +1,53 @@
- extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
-  img(src='/images/phoenix.png')
+//extends layout
+//
+//block content
+//  h1= title
+//  p Welcome to #{title}
+//
+//
+doctype html
+head
+  title TOY CITY
+  style(type='text/css').
+    body{
+    background-color: aliceblue;
+    }
+    h1{
+    background-color: darkgray;
+    }
+header
+  center
+    h1 TOY CITY
+  hr
+section
+  article
+    header
+      center
+        br
+        br
+        img(src='/images/Map.png' width='1000' height='500' alt='Map illustration.')
+        p (&#xC9C0;&#xB3C4;)
+  br
+  br
+  br
+  center
+    article
+      table(border='1' width='1000' height='100')
+        tr
+          th
+            a(style='font-size:1em;') 목적지를 입력하세요.
+          th(rowspan='2')
+            button(type='button' style='color:black; background:white; font-size:2em;') 출발
+          th(rowspan='2')
+            button(type='button' style='color:black; background:white; font-size:2em;') 정지
+        tr
+          th
+            select(name='where')
+              option(value='Home') &#xC9D1;
+              option(value='Building 1') &#xAC74;&#xBB3C; 1
+              option(value='Building 2') &#xAC74;&#xBB3C; 2
+              option(value='Building 3') &#xAC74;&#xBB3C; 3
+              option(value='Garage') &#xCC28;&#xACE0;&#xC9C0;
+br
+br
+br
