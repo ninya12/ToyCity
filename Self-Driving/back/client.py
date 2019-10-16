@@ -1,28 +1,25 @@
 import socket
-import cv2
-import numpy
+import time
 
-# 연결할 서버(수신단)의 ip주소와 port번호
-TCP_IP = '192.168.0.21'
-TCP_PORT = 5001
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# 송신을 위한 socket 준비
-sock = socket.socket()
-sock.connect((TCP_IP, TCP_PORT))
+localHost = '127.0.0.1'
+bufSize = 1024
+port = 13424
 
-# OpenCV를 이용해서 webcam으로 부터 이미지 추출
-capture = cv2.VideoCapture(-1)
-capture.set(3, 320)
-capture.set(4, 240)
+dest = (localHost, port)
+sock.connect(dest)
 
-# 추출한 이미지를 String 형태로 변환(인코딩)시키는 과정
-# String 형태로 변환한 이미지를 socket을 통해서 전송
-while(True):
-    ret, frame = capture.read()
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
-    result, imgencode = cv2.imencode('.jpg', frame, encode_param)
-    data = numpy.array(imgencode)
-    stringData = data.tostring()
-    sock.send((str(len(stringData)).ljust(16)).encode('utf-8'))
-    sock.send(stringData)
+while(1):
+    try:
+        data = input()
+        sock.send(data.encode())
+        if(data=="exit"):
+            print("[-] Communication Terminate")
+            break
+
+    except KeyboardInterrupt:
+        break
+
+sock.shutdown
 sock.close()
