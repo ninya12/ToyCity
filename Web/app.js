@@ -42,7 +42,9 @@ app.use(function(err, req, res, next) {
 
 var net = require('net');
 var image = '';
-var sendData = '';
+var sendData = 'NSND';
+var imageBus = '';
+var sendDataBus = 'NS';
 var server = net.createServer(function(client) {
   console.log('Client connection: ');
   console.log('   local = %s:%s', client.localAddress, client.localPort);
@@ -53,8 +55,15 @@ var server = net.createServer(function(client) {
       image = '';
     }
     image += data.toString();
-    if(sendData.lenght > 0){
+    var sendLength = '';
+    if(sendData.length > 0){
+      if(sendData.length < 10){
+        sendLength = '0' + sendData.length
+      }
+      sendData = sendLength + sendData;
       writeData(client, sendData);
+      console.log("send data to pi " + sendData + " " + sendData.length)
+      sendData = "";
     }
   });
   client.on('end', function() {
@@ -80,6 +89,50 @@ server.listen(19882, function() {
   });
 });
 
+var serverBus = net.createServer(function(client) {
+  console.log('Client connection: ');
+  console.log('   local = %s:%s', client.localAddress, client.localPort);
+  console.log('   remote = %s:%s', client.remoteAddress, client.remotePort);
+  client.setTimeout(1500);
+  client.on('data', function(data) {
+    if(data.toString().substr(0,4) == "/9j/"){
+      image = '';
+    }
+    image += data.toString();
+    var sendLength = '';
+    if(sendDataBus.length > 0){
+      if(sendDataBus.length < 10){
+        sendLength = '0' + sendDataBus.length
+      }
+      sendDataBus = sendLength + sendDataBus;
+      writeData(client, sendDataBus);
+      console.log("send data to pi " + sendDataBus + " " + sendDataBus.length)
+      sendDataBus = "";
+    }
+  });
+  client.on('end', function() {
+    console.log('Client disconnected');
+    serverBus.getConnections(function(err, count){
+      console.log('Remaining Connections: ' + count);
+    });
+  });
+  client.on('error', function(err) {
+    console.log('Socket Error: ', JSON.stringify(err));
+  });
+  client.on('timeout', function() {
+    console.log('Socket Timed out');
+  });
+});
+serverBus.listen(19883, function() {
+  console.log('Server listening: ' + JSON.stringify(serverBus.address()));
+  serverBus.on('close', function(){
+    console.log('Server Terminated');
+  });
+  serverBus.on('error', function(err){
+    console.log('Server Error: ', JSON.stringify(err));
+  });
+});
+
 function writeData(socket, data){
   var success = !socket.write(data);
   if (!success){
@@ -96,8 +149,13 @@ app.io.on('connection', function(socket){
     console.log("disconnect : " + socket.id);
   });
   socket.on('image', function(data){
-    if(image.length > 6000){
+    if(image.length > 4000){
       socket.emit('image', {image: true, buffer: image});
+    }
+  });
+  socket.on('image2', function(data){
+    if(imageBus.length > 4000){
+      socket.emit('image2', {image: true, buffer: imageBus});
     }
   });
 });
