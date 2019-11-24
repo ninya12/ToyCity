@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*- # 한글 주석쓰려면 이거 해야함
 import cv2  # opencv 사용
 import numpy as np
-import pickle
-import struct
+import base64
 
 
 class MyCam(object):
@@ -32,22 +31,21 @@ class MyCam(object):
         line_arr = hough_lines(ROI_img, 1, 1 * np.pi/180, 30, 10, 20)
         # 허프 변환
         temp = np.zeros((self.height, self.width, 3),
-                         dtype=np.uint8)
-        degree = tilting_restruction(line_arr, temp, 130, 50)
-        if(degree is not None and degree != 0):
-            self.degree.append(90 + degree)
+                        dtype=np.uint8)
+        if(tilting_restruction(line_arr, temp, 130, 50) is not None):
+            self.degree.append(tilting_restruction(line_arr, temp, 130, 50))
         degreeSum = 0
         if(len(self.degree) >= 10):
-             for i in self.degree:
-                 if(i is not None):
-                     degreeSum += i
-                     self.average = degreeSum / len(self.degree)
-                     self.degree.pop(0)
+            for i in self.degree:
+                if(i is not None):
+                    degreeSum += i
+                    self.average = degreeSum / len(self.degree)
+                    self.degree.pop(0)
         else:
-             for i in self.degree:
-                 if(i is not None):
-                     degreeSum += i
-                     self.average = degreeSum / len(self.degree)
+            for i in self.degree:
+                if(i is not None):
+                    degreeSum += i
+                    self.average = degreeSum / len(self.degree)
 
         print(self.average)
         self.result = weighted_img(temp, image)
@@ -229,21 +227,22 @@ def tilting_restruction(line_arr, img, horizontal_slope, vertical_slope):
                 interPoint = get_interpoint(point1, point2, point3, point4)
                 if(interPoint is not None):
                     interLines = [320/2, 240, interPoint[0], 0]
-                    draw_fit_line(img, interLines, color=[0, 255, 0], thickness=6)
+                    draw_fit_line(img,
+                                  interLines,
+                                  color=[0, 255, 0],
+                                  thickness=6)
                     dx = interLines[0] - interLines[2]
                     dy = interLines[1] - interLines[3]
-                    inter_degree = - np.arctan2(dx, dy) * 180 / np.pi
+                    inter_degree = 90 - np.arctan2(dx, dy) * 180 / np.pi
                     return int(inter_degree)
 
 
 def send_image(sock, frame):
-    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
+    encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 50]
     result, imgencode = cv2.imencode('.jpg', frame, encode_param)
-    data = pickle.dumps(imgencode, 0)
-    size = len(data)
-
+    data = base64.b64encode(imgencode)
     try:
-        sock.sendall(struct.pack(">L", size) + data)
+        sock.sendall(data)
     except IOError:
         sock.close()
         return False

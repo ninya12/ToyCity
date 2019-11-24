@@ -79,4 +79,3 @@ def Stop():
     GPIO.output(rirPin1, False)
     GPIO.output(rirPin2, False)
 
-

@@ -1,0 +1,54 @@
+extends layout
+
+block title
+    title TOY CITY &middot; Map
+    h1.h2 Map
+
+block content
+  //- style.
+  //-   .box {
+  //-   width: 800px;
+  //-   height: 500px;
+  //-   border-style: dotted; }
+  //-   #msg {background-color: #CCC; margin: 20px;}
+  //-   #map {background-color: #CCC; margin: 20px; }
+  //-   ul li {list-style-type: none;}
+  div
+    #map.box
+      img(src='images/Map2.png' width='70%' height='70%')
+    .dropdown
+      button.btn.btn-sm.btn-primary.dropdown-toggle(type='button' data-toggle='dropdown')
+        span(data-feather='map-pin')
+        |                         State
+      .dropdown-menu
+        a.dropdown-item(href='#') Link1
+        a.dropdown-item(href='#') Link2
+        a.dropdown-item(href='#') Link3
+    a.btn-gradient.blue.mini(href='#') &#xC804;&#xC1A1;
+
+block sidebar
+  li.nav-item
+    a.nav-link(href='/')
+      span(data-feather='home')
+      |                     Home 
+      span.sr-only (current)
+  li.nav-item
+    a.nav-link(href='/cam')
+      span(data-feather='video')
+      |                     Cam
+  li.nav-item
+    a.nav-link.active(href='/map')
+      span(data-feather='map')
+      |                     Map
+  li.nav-item
+    a.nav-link(href='/author')
+      span(data-feather='users')
+      |               Authors
+  li.nav-item
+    a.nav-link(href='/log')
+      span(data-feather='file')
+      |               Log
+  li.nav-item
+    a.nav-link(href='/github')
+      span(data-feather='github')
+      |               Github

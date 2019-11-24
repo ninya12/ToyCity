@@ -1,0 +1,64 @@
+extends layout
+
+block title
+    title TOY CITY &middot; Cam
+    h1.h2 Cam
+
+block content
+  .container
+    .row
+      .col-md-4
+        img#camera1.img-thumbnail.img-responsive.center-block
+      .col-md-4
+        img#camera2.img-thumbnail.img-responsive.center-block
+  script(src='socket.io/socket.io.js')  
+  script.
+    var socket = io();
+    var socket2 = io();
+    var ctx = document.getElementById('camera1');
+    var ctx2 = document.getElementById('camera2');
+    ctx.width = 400;
+    ctx.height = 300;
+    ctx.src = 'images/notfound.png';
+    ctx2.width = 400;
+    ctx2.height = 300;
+    ctx2.src = 'images/notfound.png';
+    socket.on('image', function(info){
+      if(info.image){
+        ctx.src = 'data:image/jpeg;base64,' + info.buffer;
+      }
+    })
+    function function2(){
+      socket.emit('image', "");
+    }
+  script(type='text/javascript').
+    window.setInterval(function2, 1000);
+
+block sidebar
+  li.nav-item
+    a.nav-link(href='/')
+      span(data-feather='home')
+      |                     Home 
+      span.sr-only (current)
+  li.nav-item
+    a.nav-link.active(href='/cam')
+      span(data-feather='video')
+      |                     Cam
+  li.nav-item
+    a.nav-link(href='/map')
+      span(data-feather='map')
+      |                     Map
+  li.nav-item
+    a.nav-link(href='/author')
+      span(data-feather='users')
+      |               Authors
+  li.nav-item
+    a.nav-link(href='/log')
+      span(data-feather='file')
+      |               Log
+  li.nav-item
+    a.nav-link(href='/github')
+      span(data-feather='github')
+      |               Github
+
+  

@@ -1,0 +1,37 @@
+extends layout
+
+block title
+    title TOY CITY &middot; GitHub
+    h1.h2 GitHub
+
+block content
+  a(href='https://github.com/ninya12/ToyCity' target='_blank')
+    span(data-feather='github')
+    |    Github Link
+
+block sidebar
+  li.nav-item
+    a.nav-link(href='/')
+      span(data-feather='home')
+      |                     Home 
+      span.sr-only (current)
+  li.nav-item
+    a.nav-link(href='/cam')
+      span(data-feather='video')
+      |                     Cam
+  li.nav-item
+    a.nav-link(href='/map')
+      span(data-feather='map')
+      |                     Map
+  li.nav-item
+    a.nav-link(href='/author')
+      span(data-feather='users')
+      |               Authors
+  li.nav-item
+    a.nav-link(href='/log')
+      span(data-feather='file')
+      |               Log
+  li.nav-item
+    a.nav-link.active(href='/github')
+      span(data-feather='github')
+      |               Github
