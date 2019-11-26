@@ -28,12 +28,12 @@ class MyCam(object):
                             (self.width - 0, self.height)]],
                             dtype=np.int32)
         ROI_img = region_of_interest(canny_img, vertices)  # ROI 설정
-        line_arr = hough_lines(ROI_img, 1, 1 * np.pi/180, 30, 10, 20)
+        line_arr = hough_lines(ROI_img, 1, 1 * np.pi/180, 30, 15, 50)
         # 허프 변환
         temp = np.zeros((self.height, self.width, 3),
                         dtype=np.uint8)
-        if(tilting_restruction(line_arr, temp, 130, 50) is not None):
-            self.degree.append(tilting_restruction(line_arr, temp, 130, 50))
+        if(tilting_restruction(line_arr, temp, 140, 50) is not None):
+            self.degree.append(tilting_restruction(line_arr, temp, 140, 50))
         degreeSum = 0
         if(len(self.degree) >= 6):
             for i in self.degree:
@@ -46,6 +46,7 @@ class MyCam(object):
                 if(i is not None):
                     degreeSum += i
                     self.average = degreeSum / len(self.degree)
+        print(self.average)
         self.result = weighted_img(temp, image)
 
     def __del__(self):
@@ -104,8 +105,8 @@ def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]),
                             minLineLength=min_line_len,
                             maxLineGap=max_line_gap)
-    #  line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
-    #  draw_lines(line_img, lines)
+#    line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+#    draw_lines(line_img, lines)
     return lines
 
 

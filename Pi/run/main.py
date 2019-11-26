@@ -51,12 +51,11 @@ def SendVideo():
             if(cam.send_image(sock, camera.result) is False):
                 break
             if(camera.average >= 91):
-                motor.Right(60)
+                motor.Right(70)
             if(camera.average <= 89):
-                motor.Left(60)
+                motor.Left(70)
             if(camera.average == 90):
                 motor.Left(0)
-            time.sleep(0.2)
             if(camera.waitkey(1) & 0xFF == 27):
                 break
         except Exception as e:
@@ -80,10 +79,16 @@ def ReadCommand():
 
 def Ultra():
     while True:
-        distance = ultra.get_ultra()
-        if(distance < 15):
-            motor.Stop()
-            print(distance, "cm")
+        try:
+            distance = ultra.get_ultra()
+            if(distance < 15):
+                motor.Stop()
+                command[0] = 'NS'
+            else:
+                command[0] = 'ND'
+            time.sleep(1)
+        except:
+            print("ultra sensor failed")
 
 
 try:
