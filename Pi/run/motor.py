@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 
 # Forward Pwm Pin : 20
 pwmPin1 = 20

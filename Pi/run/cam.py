@@ -22,10 +22,10 @@ class MyCam(object):
         gray_img = grayscale(image)  # 흑백이미지로 변환
         blur_img = gaussian_blur(gray_img, 3)  # Blur 효과
         canny_img = canny(blur_img, 40, 120)  # Canny edge 알고리즘
-        vertices = np.array([[(20, self.height / 5 * 4),
-                            (self.width / 3 + 20, self.height / 5),
-                            (self.width / 3 * 2 - 20, self.height / 5),
-                            (self.width - 20, self.height / 5 * 4)]],
+        vertices = np.array([[(0, self.height),
+                            (self.width / 3, 0),
+                            (self.width / 3 * 2, 0),
+                            (self.width - 0, self.height)]],
                             dtype=np.int32)
         ROI_img = region_of_interest(canny_img, vertices)  # ROI 설정
         line_arr = hough_lines(ROI_img, 1, 1 * np.pi/180, 30, 10, 20)
@@ -35,7 +35,7 @@ class MyCam(object):
         if(tilting_restruction(line_arr, temp, 130, 50) is not None):
             self.degree.append(tilting_restruction(line_arr, temp, 130, 50))
         degreeSum = 0
-        if(len(self.degree) >= 10):
+        if(len(self.degree) >= 6):
             for i in self.degree:
                 if(i is not None):
                     degreeSum += i
@@ -46,8 +46,6 @@ class MyCam(object):
                 if(i is not None):
                     degreeSum += i
                     self.average = degreeSum / len(self.degree)
-
-        print(self.average)
         self.result = weighted_img(temp, image)
 
     def __del__(self):
@@ -211,14 +209,14 @@ def tilting_restruction(line_arr, img, horizontal_slope, vertical_slope):
                 point3 = (right_fit_line[0], right_fit_line[1])
                 point4 = (right_fit_line[2], right_fit_line[3])
             # vanishing Point
-            # if(point1 is None):
-            #     point1 = (0, 0)
-            # if(point2 is None):
-            #     point2 = (0, 239)
-            # if(point3 is None):
-            #     point3 = (319, 0)
-            # if(point4 is None):
-            #     point4 = (319, 239)
+            if(point1 is None):
+                point1 = (160, 0)
+            if(point2 is None):
+                point2 = (0, 239)
+            if(point3 is None):
+                point3 = (160, 0)
+            if(point4 is None):
+                point4 = (319, 240)
 
             if(point1 is not None and
                point2 is not None and
